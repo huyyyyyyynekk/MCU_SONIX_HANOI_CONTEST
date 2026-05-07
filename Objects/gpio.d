@@ -1,0 +1,9 @@
+.\objects\gpio.o: Source\Driver\GPIO.c
+.\objects\gpio.o: Source\Driver\GPIO.h
+.\objects\gpio.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\SN32F400.h
+.\objects\gpio.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0.h
+.\objects\gpio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\gpio.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\gpio.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\gpio.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\gpio.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\system_SN32F400.h

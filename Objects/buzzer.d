@@ -1,0 +1,11 @@
+.\objects\buzzer.o: E:\MCU_HANOI_CONTEST\src\Module\Buzzer.c
+.\objects\buzzer.o: E:\MCU_HANOI_CONTEST\src\Module\Buzzer.h
+.\objects\buzzer.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\SN32F400.h
+.\objects\buzzer.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0.h
+.\objects\buzzer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\buzzer.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\buzzer.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\buzzer.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\buzzer.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\system_SN32F400.h
+.\objects\buzzer.o: E:\MCU_HANOI_CONTEST\src\Module\..\Driver\CT16B0.h
+.\objects\buzzer.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\SN32F400_Def.h

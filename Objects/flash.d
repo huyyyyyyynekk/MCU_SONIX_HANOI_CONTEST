@@ -1,0 +1,10 @@
+.\objects\flash.o: E:\MCU_HANOI_CONTEST\src\Driver\Flash.c
+.\objects\flash.o: E:\MCU_HANOI_CONTEST\src\Driver\Flash.h
+.\objects\flash.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\SN32F400.h
+.\objects\flash.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0.h
+.\objects\flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\flash.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\flash.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\flash.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\flash.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\system_SN32F400.h
+.\objects\flash.o: C:\Users\ADMIN\AppData\Local\Arm\Packs\SONiX\SN32F4_DFP\1.1.1\Device\Include\SN32F400_Def.h
