@@ -86,7 +86,7 @@ void update_segment(int h, int m) {
     
     segment_buff[0] = SEGMENT_TABLE[h_tmp_1];   
     segment_buff[1] = SEGMENT_TABLE[h_tmp_2];  
-		segment_buff[1] |= 0x80;
+	segment_buff[1] |= 0x80;
     segment_buff[2] = SEGMENT_TABLE[m_tmp_1];   
     segment_buff[3] = SEGMENT_TABLE[m_tmp_2];  
 }
@@ -107,12 +107,12 @@ void Buzzer(uint16_t pitch, uint8_t Mode){
 void Read_EEPROM(void){
     uint8_t h_m_tmp[3];
     eeprom_read(EEPROM_READ_ADDR, 0x00, h_m_tmp, 3);
-		if (h_m_tmp[2] == 0xAA){
-			check = 1;
-		}
-		else {
-			check = 0;
-		}
+	if (h_m_tmp[2] == 0xAA){
+		check = 1;
+	}
+	else {
+		check = 0;
+	}
     if(h_m_tmp[0] <= 23)
         Check_Date_Hour = h_m_tmp[0];
     else
@@ -137,9 +137,9 @@ int main(void) {
 		update_segment(0,0);
 		Read_EEPROM();
 	
-		SN_GPIO2->MODE &= ~((3 << 8) | (3 << 14));  // Xóa bit Mode -> Input cho P2.4 và P2.7
-		SN_GPIO2->CFG  &= ~((3 << 8) | (3 << 14));  // Xóa cu
-		SN_GPIO2->CFG  |=  ((2 << 8) | (2 << 14));  // Set giá tr? 2 (10b) -> Pull-up cho P2.4 và P2.7
+		SN_GPIO2->MODE &= ~((3 << 8) | (3 << 14));  //Xoa bit Mode -> Input cho P2.4 va P2.7
+		SN_GPIO2->CFG  &= ~((3 << 8) | (3 << 14));  // Xoa cu
+		SN_GPIO2->CFG  |=  ((2 << 8) | (2 << 14));  // Set gia tri 2 (10b) -> Pull-up cho P2.4 va P2.7
 		
 		SN_GPIO1->MODE |= ((1 << 4) | (1 << 5) | (1 << 7));  //output
 
@@ -147,7 +147,7 @@ int main(void) {
 		
 		//Led D6 - P3.8 output 
 		SN_GPIO3->MODE |= (1 << 8);
-    SN_GPIO3->DATA |= (1 << 8);
+   	 	SN_GPIO3->DATA |= (1 << 8);
     while(1) {
 			__WDT_FEED_VALUE;
 				if (update_1m_flag == 1){
@@ -164,24 +164,24 @@ int main(void) {
 				}
 				SN_GPIO3->DATA |= (1 << 8);
 			
-			//Quét Hàng 0 - SW3 và SW6 
-			SN_GPIO1->DATA &= ~(1 << 4); // Kéo ROW0 xuong LOW
+			//Quet hang 0 - sw3-sw6
+			SN_GPIO1->DATA &= ~(1 << 4); // Keo Row0 xuong LOW
 			UT_DelayNx10us(2); 
 			sw3_val = (SN_GPIO2->DATA & (1 << 4)) ? 1 : 0; 
 			sw6_val = (SN_GPIO2->DATA & (1 << 7)) ? 1 : 0; 
-			SN_GPIO1->DATA |= (1 << 4);  // Keo ROW0 lên HIGH lai
+			SN_GPIO1->DATA |= (1 << 4);  // Keo Row0 len lai HIGH
 
-			//Quét Hàng 1 - SW10 
-			SN_GPIO1->DATA &= ~(1 << 5); // Kéo ROW1 xuong LOW
+			//Quet hang 1 - SW10 
+			SN_GPIO1->DATA &= ~(1 << 5); // Keo Row1 xuong LOW
 			UT_DelayNx10us(2);
 			sw10_val = (SN_GPIO2->DATA & (1 << 7)) ? 1 : 0; 
-			SN_GPIO1->DATA |= (1 << 5);  // Kéo ROW1 lên HIGH lai
+			SN_GPIO1->DATA |= (1 << 5);  // Keo Row1 len lai HIGH
 
-			//Quét Hàng 3 - SW16 ---
-			SN_GPIO1->DATA &= ~(1 << 7); // Kéo ROW3 xuong LOW
+			//Quet hang 3 - SW16 ---
+			SN_GPIO1->DATA &= ~(1 << 7); // Keo Row3 xuong LOW
 			UT_DelayNx10us(2);
 			sw16_val = (SN_GPIO2->DATA & (1 << 4)) ? 1 : 0; 
-			SN_GPIO1->DATA |= (1 << 7);  // Kéo ROW3 lên HIGH lai
+			SN_GPIO1->DATA |= (1 << 7);  // Keo Row3 len lai HIGH
 			
 			//Bam nut sw3
 			if (sw3_val == sw3_current_state){
@@ -203,11 +203,11 @@ int main(void) {
 							Mode_Normal = 1;
 						}
 						else if (Mode_Normal == 1 && Mode_Change_Time_Hour == 1 && Mode_Change_Time_Minute == 0){
-								Minute_Change_Time = minute;
-								hour = Hour_Change_Time;
-								button_check = 1;
-								Mode_Change_Time_Hour = 1;
-								Mode_Change_Time_Minute = 1;
+							Minute_Change_Time = minute;
+							hour = Hour_Change_Time;
+							button_check = 1;
+							Mode_Change_Time_Hour = 1;
+							Mode_Change_Time_Minute = 1;
 						}
 						else if (Mode_Normal == 1 && Mode_Change_Time_Hour == 1 && Mode_Change_Time_Minute == 1){
 							Mode_Normal = 0;
@@ -234,7 +234,7 @@ int main(void) {
 					segment_buff[1] = 0x00;
 				}
 				segment_buff[2] = SEGMENT_TABLE[Minute_Change_Time / 10];
-        segment_buff[3] = SEGMENT_TABLE[Minute_Change_Time % 10];
+        		segment_buff[3] = SEGMENT_TABLE[Minute_Change_Time % 10];
 				segment_buff[1] |= 0x80;
 			}
 			else  if (Mode_Normal == 1 && Mode_Change_Time_Hour == 1 && Mode_Change_Time_Minute == 1)	{
@@ -247,7 +247,7 @@ int main(void) {
 					segment_buff[3] = 0x00;
 				}	
 				segment_buff[0] = SEGMENT_TABLE[Hour_Change_Time / 10];
-        segment_buff[1] = SEGMENT_TABLE[Hour_Change_Time % 10];
+        		segment_buff[1] = SEGMENT_TABLE[Hour_Change_Time % 10];
 				segment_buff[1] |= 0x80;
 			}
 			//Blink-HH-MM-sw3
@@ -305,7 +305,7 @@ int main(void) {
 					SN_GPIO3->DATA |= (1 << 8);
 				}
 				segment_buff[2] = SEGMENT_TABLE[Minute_Change_Time_Date / 10];
-        segment_buff[3] = SEGMENT_TABLE[Minute_Change_Time_Date % 10];
+        		segment_buff[3] = SEGMENT_TABLE[Minute_Change_Time_Date % 10];
 				segment_buff[1] |= 0x80;
 			}
 			else  if (Mode_Normal == 1 && Mode_Change_Time_Hour_Date == 1 && Mode_Change_Time_Minute_Date == 1)	{
@@ -320,7 +320,7 @@ int main(void) {
 					SN_GPIO3->DATA |= (1 << 8);
 				}	
 				segment_buff[0] = SEGMENT_TABLE[Hour_Change_Time_Date / 10];
-        segment_buff[1] = SEGMENT_TABLE[Hour_Change_Time_Date % 10];
+        		segment_buff[1] = SEGMENT_TABLE[Hour_Change_Time_Date % 10];
 				segment_buff[1] |= 0x80;
 			}
 			//Blink-HH-MM-sw16
@@ -415,7 +415,7 @@ int main(void) {
 			
 			//Buzzer-Timeout-QuetLed
 			if (sw3_val == 0 || sw6_val == 0 || sw10_val == 0 || sw16_val == 0) {
-					Timeout = 30000; 
+				Timeout = 30000; 
 			}
 			if (Mode_Normal == 1 && Timeout_Flag == 1 && (button_check == 1 || button_check_date == 1)) {
 				Buzzer_03 = 300;
@@ -440,23 +440,23 @@ int main(void) {
 				
 			if (Mode_Normal == 0) {
 				if (hour == Check_Date_Hour && minute == Check_Date_Minute && check == 1) {
-						if (Buzzer_5_Flag_tmp == 0) {
-								Buzzer_5_Flag = 1;     
-								Buzzer_5_Flag_tmp = 1; 
-						}
+					if (Buzzer_5_Flag_tmp == 0) {
+							Buzzer_5_Flag = 1;     
+							Buzzer_5_Flag_tmp = 1; 
+					}
 				} 
 				else {
-						Buzzer_5_Flag_tmp = 0; 
+					Buzzer_5_Flag_tmp = 0; 
 				}
 			}
 			if (Buzzer_03_Flag == 1) {
-					Buzzer(PITCH_BUTTON, 6);
+				Buzzer(PITCH_BUTTON, 6);
 			} 
 			else if (Buzzer_5_Flag == 1) {
-					Buzzer(PITCH_DATE, 1);
+				Buzzer(PITCH_DATE, 1);
 			} 
 			else {
-					SN_CT16B0->MR0 = 0;
+				SN_CT16B0->MR0 = 0;
 			}
 			Digital_Scan();
 			//Buzzer-Timeout-QuetLed
