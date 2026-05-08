@@ -253,5 +253,3 @@ Board hỗ trợ:
 
 ---
 
-MCU HANOI CONTEST
-```
