@@ -7,7 +7,6 @@
 #include "..\Driver\Utility.h"
 #include "..\Module\EEPROM.h"
 #include "..\Module\Segment.h"
-#include "..\Module\Buzzer.h"
 #include "..\Driver\SysTick.h"
 
 #ifndef SN32F407
@@ -54,7 +53,6 @@ int Mode_Change_Time_Minute = 0;
 int Mode_Change_Time_Hour_Date = 0;
 int Mode_Change_Time_Minute_Date = 0;
 int sw3_counter = 0;
-int sw3_counter_check = 0;
 int sw3_current_state = 1;
 int sw3_last_state = 1;
 int sw16_counter = 0;
@@ -106,8 +104,7 @@ void Buzzer(uint16_t pitch, uint8_t Mode){
 	}
 }
 
-void Read_EEPROM(void)
-{
+void Read_EEPROM(void){
     uint8_t h_m_tmp[3];
     eeprom_read(EEPROM_READ_ADDR, 0x00, h_m_tmp, 3);
 		if (h_m_tmp[2] == 0xAA){
@@ -139,16 +136,14 @@ int main(void) {
 		I2C0_Init();
 		update_segment(0,0);
 		Read_EEPROM();
-		// 1. C?u hình C?t (COL): P2.4 và P2.7 thành INPUT PULL-UP
+	
 		SN_GPIO2->MODE &= ~((3 << 8) | (3 << 14));  // Xóa bit Mode -> Input cho P2.4 và P2.7
 		SN_GPIO2->CFG  &= ~((3 << 8) | (3 << 14));  // Xóa cu
 		SN_GPIO2->CFG  |=  ((2 << 8) | (2 << 14));  // Set giá tr? 2 (10b) -> Pull-up cho P2.4 và P2.7
 		
-		// 2. C?u hình Hàng (ROW): P1.4, P1.5, P1.7 thành OUTPUT
-		SN_GPIO1->MODE |= ((1 << 4) | (1 << 5) | (1 << 7)); 
+		SN_GPIO1->MODE |= ((1 << 4) | (1 << 5) | (1 << 7));  //output
 
-		// 3. Ðua t?t c? các hàng lên m?c cao ban d?u (không tích c?c)
-		SN_GPIO1->DATA |= ((1 << 4) | (1 << 5) | (1 << 7));
+		SN_GPIO1->DATA |= ((1 << 4) | (1 << 5) | (1 << 7)); // 1
 		
 		//Led D6 - P3.8 output 
 		SN_GPIO3->MODE |= (1 << 8);
@@ -169,25 +164,26 @@ int main(void) {
 				}
 				SN_GPIO3->DATA |= (1 << 8);
 			
-			// --- Quét Hàng 0 (ROW0_P1.4) d? l?y SW3 và SW6 ---
-			SN_GPIO1->DATA &= ~(1 << 4); // Kéo ROW0 xu?ng LOW
+			//Quét Hàng 0 - SW3 và SW6 
+			SN_GPIO1->DATA &= ~(1 << 4); // Kéo ROW0 xuong LOW
 			UT_DelayNx10us(2); 
 			sw3_val = (SN_GPIO2->DATA & (1 << 4)) ? 1 : 0; 
 			sw6_val = (SN_GPIO2->DATA & (1 << 7)) ? 1 : 0; 
-			SN_GPIO1->DATA |= (1 << 4);  // Kéo ROW0 lên HIGH l?i
+			SN_GPIO1->DATA |= (1 << 4);  // Keo ROW0 lên HIGH lai
 
-			// --- Quét Hàng 1 (ROW1_P1.5) d? l?y SW10 ---
-			SN_GPIO1->DATA &= ~(1 << 5); // Kéo ROW1 xu?ng LOW
+			//Quét Hàng 1 - SW10 
+			SN_GPIO1->DATA &= ~(1 << 5); // Kéo ROW1 xuong LOW
 			UT_DelayNx10us(2);
-			sw10_val = (SN_GPIO2->DATA & (1 << 7)) ? 1 : 0; // Ð?c COL3
-			SN_GPIO1->DATA |= (1 << 5);  // Kéo ROW1 lên HIGH l?i
+			sw10_val = (SN_GPIO2->DATA & (1 << 7)) ? 1 : 0; 
+			SN_GPIO1->DATA |= (1 << 5);  // Kéo ROW1 lên HIGH lai
 
-			// --- Quét Hàng 3 (ROW3_P1.7) d? l?y SW16 ---
-			SN_GPIO1->DATA &= ~(1 << 7); // Kéo ROW3 xu?ng LOW
+			//Quét Hàng 3 - SW16 ---
+			SN_GPIO1->DATA &= ~(1 << 7); // Kéo ROW3 xuong LOW
 			UT_DelayNx10us(2);
-			sw16_val = (SN_GPIO2->DATA & (1 << 4)) ? 1 : 0; // Ð?c COL0
-			SN_GPIO1->DATA |= (1 << 7);  // Kéo ROW3 lên HIGH l?i
+			sw16_val = (SN_GPIO2->DATA & (1 << 4)) ? 1 : 0; 
+			SN_GPIO1->DATA |= (1 << 7);  // Kéo ROW3 lên HIGH lai
 			
+			//Bam nut sw3
 			if (sw3_val == sw3_current_state){
 				sw3_counter = 0;
 			}
@@ -197,7 +193,6 @@ int main(void) {
 					sw3_current_state = sw3_val;
 					sw3_counter = 0;
 					if (sw3_current_state == 0 && sw3_last_state == 1){
-						sw3_counter_check++;
 						Buzzer_03 = 300;
 						if (Mode_Normal == 0){
 							Hour_Change_Time = hour;
@@ -208,22 +203,16 @@ int main(void) {
 							Mode_Normal = 1;
 						}
 						else if (Mode_Normal == 1 && Mode_Change_Time_Hour == 1 && Mode_Change_Time_Minute == 0){
-//							if (sw3_counter_check == 1){
 								Minute_Change_Time = minute;
 								hour = Hour_Change_Time;
 								button_check = 1;
-//								update_segment(hour,Minute_Change_Time);
-//							}
-//							else if (sw3_counter_check == 2){
 								Mode_Change_Time_Hour = 1;
 								Mode_Change_Time_Minute = 1;
-//							}
 						}
 						else if (Mode_Normal == 1 && Mode_Change_Time_Hour == 1 && Mode_Change_Time_Minute == 1){
 							Mode_Normal = 0;
 							Mode_Change_Time_Hour = 0;
 							Mode_Change_Time_Minute = 0;
-							sw3_counter_check = 0;
 							hour = Hour_Change_Time;
 							minute = Minute_Change_Time;
 							update_segment(hour,minute);
@@ -232,7 +221,9 @@ int main(void) {
 				}
 			}
 			sw3_last_state = sw3_current_state;
+			//Bam nut sw3
 			
+			//Blink-HH-MM-sw3
 			if(Mode_Normal == 1 && Mode_Change_Time_Hour == 1 && Mode_Change_Time_Minute == 0){
 				if (Blink_HH == 1){
 					segment_buff[0] = SEGMENT_TABLE[Hour_Change_Time / 10];   
@@ -259,7 +250,9 @@ int main(void) {
         segment_buff[1] = SEGMENT_TABLE[Hour_Change_Time % 10];
 				segment_buff[1] |= 0x80;
 			}
+			//Blink-HH-MM-sw3
 			
+			//Bam nut sw16
 			if (sw16_val == sw16_current_state){
 				sw16_counter = 0;
 			}
@@ -297,7 +290,9 @@ int main(void) {
 				}
 			}
 			sw16_last_state = sw16_current_state;
+			//Bam nut sw16
 			
+			//Blink-HH-MM-sw16
 			if(Mode_Normal == 1 && Mode_Change_Time_Hour_Date == 1 && Mode_Change_Time_Minute_Date == 0){
 				if (Blink_HH == 1){
 					segment_buff[0] = SEGMENT_TABLE[Hour_Change_Time_Date / 10];   
@@ -328,7 +323,9 @@ int main(void) {
         segment_buff[1] = SEGMENT_TABLE[Hour_Change_Time_Date % 10];
 				segment_buff[1] |= 0x80;
 			}
+			//Blink-HH-MM-sw16
 			
+			//Bam nut sw6
 			if (sw6_val == sw6_current_state){
 				sw6_counter = 0;
 			}
@@ -366,7 +363,9 @@ int main(void) {
 					}
 				}
 			}
+			//Bam nut sw6
 			
+			//Bam nut sw10
 			if (sw10_val == sw10_current_state){
 				sw10_counter = 0;
 			}
@@ -412,7 +411,9 @@ int main(void) {
 					}
 				}
 			}
+			//Bam nut sw10
 			
+			//Buzzer-Timeout-QuetLed
 			if (sw3_val == 0 || sw6_val == 0 || sw10_val == 0 || sw16_val == 0) {
 					Timeout = 30000; 
 			}
@@ -458,6 +459,7 @@ int main(void) {
 					SN_CT16B0->MR0 = 0;
 			}
 			Digital_Scan();
+			//Buzzer-Timeout-QuetLed
     }
 }
 
